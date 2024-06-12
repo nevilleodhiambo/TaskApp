@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewUserCreated;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -23,16 +24,17 @@ class AuthController extends Controller
         if($errors->fails()){
             return response($errors->errors()->all(), 422);
         }
-        User::create([
+        $user = User::create([
             'email' => $field['email'],
             'password' => $field['password'],
-            'isValidEmail' => User::IS_VALID_EMAIL,
-            'remeber_token' => $this->generateRandomCode()
+            'isValidEmail' => User::IS_INVALID_EMAIL,
+            'remeber_token' => Str::random(10),
         ]);
-        return response(['message', 'user Created Successfull']);
+        NewUserCreated::dispatch($user);
+        return response([ 'user' => $user, 'message' => 'user Created Successfull'], 200);
     }
-    public function generateRandomCode(){
-        $code = Str::random(10 . time());
-        return $code;
-    }
+    // public function generateRandomCode(){
+    //     $code = Str::random(10 . time());
+    //     return $code;
+    // }
 }

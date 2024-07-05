@@ -20,4 +20,10 @@ class Project extends Model
         $slug = Str::slug($name).'-'.$code;
         return $slug;
     }
+    public function taskProgress(){
+        return $this->hasOne(TaskProgress::class, 'projectId');
+    }
+    public function tasks(){
+        return $this->hasMany(Task::class, 'projectId');
+    }
 }

@@ -15,8 +15,8 @@ class TaskController extends Controller
      */
     public function createTask(Request $request)
     {
-       
-        DB::transaction(function() use($request){
+
+        DB::transaction(function () use ($request) {
             $field = $request->all();
 
             $errors = Validator::make($field, [
@@ -25,29 +25,66 @@ class TaskController extends Controller
                 'memberIds' => 'required|array',
                 'memberIds.*' => 'numeric',
             ]);
-        
+
             if ($errors->fails()) {
                 return response()->json($errors->errors()->all(), 422);
             }
-        
+
             $task = Task::create([
                 'projectId' => $field['projectId'],
                 'name' => $field['name'],
                 'status' => Task::NOT_STARTED,
             ]);
-        
+
             $members = $field['memberIds'];
             foreach ($members as $memberId) {
                 TaskMember::create([
                     'projectId' => $field['projectId'],
                     'taskId' => $task->id,
-                    'memberId' => $memberId, 
+                    'memberId' => $memberId,
                 ]);
             }
             return response(['message' => 'Task Created Successfully']);
-        
         });
-     
+    }
+
+    public function taskNotStartedToPending(Request $request)
+    {
+        Task::changeTaskStatus($request->taskId, Task::PENDING);
+
+        return response(['message', 'task moved to pending']);
+    }
+    public function taskNotStartedToCompleted(Request $request)
+    {
+        Task::changeTaskStatus($request->taskId, Task::COMPLETED);
+
+        return response(['message', 'task moved to Completed']);
+    }
+
+    public function taskPendingToCompleted(Request $request)
+    {
+        Task::changeTaskStatus($request->taskId, Task::COMPLETED);
+        return response(['message', 'task moved to Completed']);
+    }
+
+    public function taskPendingToNotStarted(Request $request)
+    {
+        Task::changeTaskStatus($request->taskId, Task::NOT_STARTED);
+
+        return response(['message', 'task moved to Not Started']);
+    }
+    public function taskCompletedToPending(Request $request)
+    {
+        Task::changeTaskStatus($request->taskId, Task::PENDING);
+
+        return response(['message', 'task moved to Not Started']);
+    }
+
+    public function taskCompletedToNotStarted(Request $request)
+    {
+        Task::changeTaskStatus($request->taskId, Task::NOT_STARTED);
+
+        return response(['message', 'task moved to Not Started']);
     }
 
     /**

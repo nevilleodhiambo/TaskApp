@@ -24,6 +24,7 @@ Route::controller(ProjectController::class)->group(function () {
     Route::get('projects', 'index');
     Route::post('/projects/pinned', 'pinnedProject');
     Route::get('projects/{slug}', 'getProject');
+    Route::get('/count/projects', 'countProject');
 });
 
 Route::controller(MemberController::class)->group(function () {
@@ -34,6 +35,10 @@ Route::controller(MemberController::class)->group(function () {
 
 Route::controller(TaskController::class)->group(function () {
     Route::post('tasks', 'createTask');
-    // Route::put('member', 'update');
-    // Route::get('members', 'index');
+    Route::post('task/task_not_started_to_pending', 'taskNotStartedToPending');
+    Route::post('task/task_not_started_to_completed', 'taskNotStartedToCompleted');
+    Route::post('task/task_pending_to_completed', 'taskPendingToCompleted');
+    Route::post('task/task_pending_to_not_started', 'taskPendingToNotStarted');
+    Route::post('task/task_completed_to_pending', 'taskCompletedToPending');
+    Route::post('task/task_completed_to_not_started', 'taskCompletedToNotStarted');
 });

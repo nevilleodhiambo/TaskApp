@@ -43,6 +43,12 @@ class ProjectController extends Controller
         return response(['data' => $project]);
     }
 
+    public function countProject(){
+        $count = Project::count();
+
+        return response(['count' => $count]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

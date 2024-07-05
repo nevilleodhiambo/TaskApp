@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Email Verification</title>
 </head>
 <body>
-    {{ $user->email}}  {{ $user->password}}  {{ $user->remember_token}}  {{ $user->email}}
-    
-    
-    
+    <p>Hello,</p>
+    <p>We have sent you this email to check if this email: <a href="#">{{$user->email}}</a> you provided is a valid one. Click on the link to verify:</p>
+    <p><a href="{{ route('verify.email', $user->remember_token) }}">Check my email</a></p>
 </body>
 </html>

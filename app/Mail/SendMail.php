@@ -30,7 +30,7 @@ class SendMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from:new Address('admin@gmail.com', 'Task App'),
+            from:new Address('nevileodhiambo28@gmail.com', 'Task App'),
             subject: 'Email Verification',
         );
     }

@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendEmailVerification
+class SendEmailVerification implements ShouldQueue
 {
 
     public $user;
@@ -26,6 +26,7 @@ class SendEmailVerification
      */
     public function handle(NewUserCreated $event): void
     {
+        sleep(5);
         // $event->user->ema
         Mail::to($event->user->email)->send(new SendMail($event->user));
     }

@@ -1,3 +1,25 @@
+<script lang="ts" setup>
+import { registerInput, useRegisterUser } from "./actions/register";
+import { useVuelidate } from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
+
+const rules = {
+    email: { required, email }, // Matches state.firstName
+    password: { required }, // Matches state.lastName
+};
+
+const v$ = useVuelidate(rules, registerInput);
+const { loading, register } = useRegisterUser();
+async function submitRegister() {
+    const result = await v$.value.$validate();
+
+    if (!result) return;
+
+    await register();
+    v$.value.$reset()
+
+}
+</script>
 <template>
     <div class="row">
         <div class="row">
@@ -8,21 +30,36 @@
                         <h2 align="center">Register</h2>
                         <br />
                         <br />
-                        <form action="">
+                        {{ registerInput }}
+                        <form @submit.prevent="submitRegister">
                             <div class="form-group">
-                                <label for="">E-mail</label>
-                                <input type="text" class="form-control" id="" placeholder="">
+                                <Error
+                                    label="E-mail"
+                                    :errors="v$.email.$errors"
+                                >
+                                    <BaseInput v-model="registerInput.email" />
+                                </Error>
                             </div>
                             <div class="form-group">
-                                <label for="">Password</label>
-                                <input type="text" class="form-control" id="" placeholder="">
+                                <Error
+                                    label="Password"
+                                    :errors="v$.password.$errors"
+                                >
+                                    <BaseInput
+                               
+                                        v-model="registerInput.password"
+                                    />
+                                </Error>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <RouterLink to="/login">Login into your account</RouterLink>
                             </div>
                             <div class="form-group">
-                                <!-- <input type="submit" class="form-control" id="" value="Register"> -->
-                                 <button class="btn btn-primary">Register</button>
+           
+                               <BaseBtn label="register" :loading="loading"/>
                             </div>
                         </form>
-                    
                     </div>
                 </div>
             </div>

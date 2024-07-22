@@ -2,31 +2,41 @@ import { ref } from "vue";
 import { makeHttpReq } from "../../../helper/makeHttpReq";
 import { showError, successMsg } from "../../../helper/toast-notification";
 
-export type RegisterUserType = {
+export type LoginUserType = {
   email: string;
   password: string;
 };
 
-export type RegisterResponseType = {
+export type LoginResponseType = {
   user: { email: string };
   message: string;
 };
 
-export const registerInput = ref<RegisterUserType>({ email: "", password: "" });
+export const loginInput = ref<LoginUserType>({} as LoginUserType);
+   
+export function showErrorResponse(error:unknown){
+    if(Array.isArray(error)){
+        for(const message of error as string[]){
+        showError(error)
+        }
+    }else{
+        showError(error as Error).message
+    }
+}
 
-export function useRegisterUser() {
+export function useLoginUser() {
   const loading = ref(false);
 
-  async function register() {
+  async function login() {
     try {
       loading.value = true;
-      const data = await makeHttpReq<RegisterUserType, RegisterResponseType>(
-        'register',
+      const data = await makeHttpReq<LoginUserType, LoginUserType>(
+        'login',
         'POST',
-        registerInput.value
+        loginInput.value
       );
       loading.value = false;
-      registerInput.value = { email: "", password: "" };
+      loginInput.value = { email: "", password: "" };
       successMsg(data.message);
     } catch (error) {
       loading.value = false;
@@ -43,5 +53,5 @@ export function useRegisterUser() {
     }
   }
 
-  return { register, loading };
+  return { login, loading };
 }

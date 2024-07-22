@@ -2,6 +2,9 @@
 import { registerInput, useRegisterUser } from "./actions/register";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
+import Error from "../../components/Error.vue";
+import BaseBtn from "../../components/BaseBtn.vue"
+import BaseInput from "../../components/BaseInput.vue"
 
 const rules = {
     email: { required, email }, // Matches state.firstName
@@ -46,7 +49,7 @@ async function submitRegister() {
                                     :errors="v$.password.$errors"
                                 >
                                     <BaseInput
-                               
+                                    type = "password"
                                         v-model="registerInput.password"
                                     />
                                 </Error>

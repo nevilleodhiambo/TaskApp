@@ -45,7 +45,7 @@ class AuthController extends Controller
          User::where('remember_token', $token)
             ->update(['isValidEmail' => User::IS_VALID_EMAIL]);
 
-        return redirect('/login');
+        return redirect('/app/login');
     }
     public function generateRandomCode()
     {

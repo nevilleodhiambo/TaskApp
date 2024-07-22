@@ -1,5 +1,5 @@
 import { APP } from "./../App/APP";
-import { getUserData } from "./getUserData";
+// import { getUserData } from "./getUserData";
 
 type HttpVerbType = "GET" | "POST" | "PUT" | "DELETE";
 

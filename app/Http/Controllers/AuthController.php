@@ -71,12 +71,13 @@ class AuthController extends Controller
         if (!is_null($user)) {
             if (intval($user->isValidEmail) !== User::IS_VALID_EMAIL) {
                 NewUserCreated::dispatch($user);
-                return response(['message' => 'We send you an email verification !']);
+                return response(['message' => 'We send you an email verification !', 'isLoggedIn' => false], 422);
             }
         Log::info('success2');
 
             if (!$user || !Hash::check($field['password'], $user->password)) {
-                return response(['message' => 'Invalid Credentials', 'isLoggedIn' => true], 422);
+                return response(['message' => 'Invalid Credentials',
+                 'isLoggedIn' => true], 422);
             }
 
             $token = $user->createToken($this->secretKey)->plainTextToken;

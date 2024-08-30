@@ -24,7 +24,7 @@ export function useCreateOrUpdateMember() {
     try {
       loading.value = true;
       const data = await makeHttpReq<MemberInputType, MemberResponseType>(
-        'register',
+        'members',
         'POST',
         MemberInput.value
       );
